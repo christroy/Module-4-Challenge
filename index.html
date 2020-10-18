@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+</head>
+
+<body>
+    <header class="quiz-header">
+        <h1>Code Quiz</h1>
+        <section>
+            <button id="start">start</button>
+        </section>
+        <section>
+            <h2 id="timer"></h2>
+        </section>
+
+
+    </header>
+
+    <main class="page-content">
+        <section id="displayed-message">
+            <p>Choose the right answer choice for each question to gain 5 points. There are 3 questions. </p>
+        </section>
+        <section class="current-problem-container">
+            <div class="problem-container-item" id="question-item">
+
+            </div>
+            <section class="problem-container-item" id="answer-choices-shown">
+            </section>
+        </section>
+
+    </main>
+    <footer>
+    </footer>
+    <script src="./assets/game.js"></script>
+</body>
+
+</html>
