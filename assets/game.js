@@ -159,6 +159,7 @@ var nextQuestion = function (event) {
 
 }
 
+
 //create function to end the game by blanking page content (main tag with page-content class in html)
 var endGame = function () {
     //clear screen
