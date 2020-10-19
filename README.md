@@ -4,7 +4,7 @@ Deployed application URL: https://christroy.github.io/Module-4-Challenge/
 Repository URL:  https://github.com/christroy/Module-4-Challenge
 
 
-ScreenShot will be posted in issues tab of repository. 
+ScreenShot will be posted in issues tab of repository. Direct link: https://github.com/christroy/Module-4-Challenge/issues/1
 
 
 Acceptance Criteria
