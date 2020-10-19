@@ -1,13 +1,14 @@
-var timerEl = document.getElementById("timer");
-var startBtn = document.getElementById("start");
-var questionEl = document.getElementById("question-item");
-var questionCounter = 0
-var playerScore = 0;
+const timerEl = document.getElementById("timer");
+const startBtn = document.getElementById("start");
+const questionEl = document.getElementById("question-item");
+const answerHolderEl = document.getElementById("answer-choices-shown");
+let questionCounter = 0;
+let playerScore = 0;
 
 //array that, at each index (position), holds an object that holds the information for a question
-var questionObjectArray = [{
-    name: "question insert 1",
-    answers: ["A. right", "B. wrong", "C. wrong", "D. wrong"],
+const questionObjectArray = [{
+    name: "What makes the sky blue?",
+    answers: ["A. sun reflecting off ocean", "B. pollution", "C. global warming", "D. birds"],
     key: 0
 
 },
@@ -38,7 +39,7 @@ var questionObjectArray = [{
 var startQuiz = function () {
 
     //hides start button 
-    document.getElementById("start").style.visibility = "hidden";
+    startBtn.style.visibility = "hidden";
 
     //function for timer
     countdown();
@@ -81,16 +82,15 @@ var countdown = function () {
 }
 
 //function to put questions on screen
-var runQuestions = function () {
+let runQuestions = function () {
 
 
     //create element to hold question then create 
-    let questionHolderEl = document.getElementById("question-item");
+    // let questionHolderEl = document.getElementById("question-item");
     let questionShown = document.createElement("div");
 
 
     //create element to hold answer choice and create unordered list to prepare to add answer choice list elements
-    let answerHolderEl = document.getElementById("answer-choices-shown");
     let answersShown = document.createElement("ul");
 
 
@@ -102,18 +102,19 @@ var runQuestions = function () {
     //grab question info and place object.name into div element
     currentQName = currentQuestion.name;
     questionShown.innerHTML = "<h3> " + currentQName + "</h3>";
-    questionHolderEl.appendChild(questionShown);
+    questionEl.appendChild(questionShown);
 
 
     //add the answer choices from the array of objects
-    for (i = 0; i < currentQuestion.answers.length; i++) {
+    for (let a = 0; a < currentQuestion.answers.length; a++) {
         //create list-item (answer choice)
         let answerChoice = document.createElement("li");
-        answerChoice.textContent = currentQuestion.answers[i];
+        answerChoice.textContent = currentQuestion.answers[a];
 
         //add property of being the correct answer
-        if (i === currentQuestion.key) {
+        if (a === currentQuestion.key) {
             answerChoice.setAttribute("correct-answer", "true");
+            //the above gives the li an attribute "correct-answer" and sets equal to "true"
             console.log(answerChoice);
         }
         //create event listener for each answer choice 
@@ -128,27 +129,27 @@ var runQuestions = function () {
 }
 
 //function to move to next question when click event occurs on answer choice list element
-var nextQuestion = function (event) {
+let nextQuestion = function (event) {
     //if question counter has not reached the maximum number then move to next question
-    if (questionCounter < 4) {
+    if (questionCounter < questionObjectArray.length -1) {
 
         //element holding child elements involving all question info.
-        let questionDataEl = document.getElementById("question-item");
-       
+        // let questionDataEl = document.getElementById("question-item");
+
         //element holding child elements involving all answer choice info.
-        let answerDataEl = document.getElementById("answer-choices-shown");
-        
+        // let answerDataEl = document.getElementById("answer-choices-shown");
+
         //increase question counter
         questionCounter++;
-       
+
         //add to player score if correct answer is clicked
         if (event.target.getAttribute("correct-answer") === "true") {
             playerScore += 5;
         }
-       
+
         //make the elements holding question/answer info. blank so that the runquestions function can add new elements with the new question's information
-        questionDataEl.innerHTML = '';
-        answerDataEl.innerHTML = '';
+        questionEl.innerHTML = '';
+        answerHolderEl.innerHTML = '';
         runQuestions();
     }
 
@@ -161,7 +162,7 @@ var nextQuestion = function (event) {
 
 
 //create function to end the game by blanking page content (main tag with page-content class in html)
-var endGame = function () {
+let endGame = function () {
     //clear screen
     let theScreen = document.getElementsByClassName("page-content");
     theScreen.innerHTML = '';
@@ -169,7 +170,7 @@ var endGame = function () {
 
 
 //make function to create elements for the player's score and other info.
-var finalScoreInfo = function () {
+let finalScoreInfo = function () {
     let finalScoreEl = document.createElement("li")
 
     finalScoreEl.textContent = playerScore;
