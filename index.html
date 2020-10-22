@@ -5,35 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Quiz</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./assets/style.css" />
 </head>
 
 <body>
-    <header class="quiz-header">
-        <h1>Code Quiz</h1>
-        <section>
-            <button id="start">start</button>
+    <div id="game">
+        <section id="score-section">
+            <button id="showscores">View High Scores</button>
+            <div id="highscores"></div>
         </section>
-        <section>
-            <h2 id="timer"></h2>
-        </section>
-
-
-    </header>
-
-    <main class="page-content">
-        <section id="displayed-message">
-            <p>Choose the right answer choice for each question to gain 5 points. There are 3 questions. </p>
-        </section>
-        <section class="current-problem-container">
-            <div class="problem-container-item" id="question-item">
-
-            </div>
-            <section class="problem-container-item" id="answer-choices-shown">
+        <header class="quiz-header">
+            <h1>Code Quiz</h1>
+            <section>
+                <button id="start">start</button>
             </section>
-        </section>
+            <section>
+                <h2 id="timer"></h2>
+            </section>
 
-    </main>
+
+
+        </header>
+
+        <main class="page-content">
+            <section id="displayed-message">
+                <p>Choose the right answer choice for each question to gain 5 points. There are 3 questions. </p>
+            </section>
+            <section class="current-problem-container">
+                <div class="problem-container-item" id="question-item">
+
+                </div>
+                <section class="problem-container-item" id="answer-choices-shown">
+                </section>
+            </section>
+
+        </main>
+    </div>
+    <!-- show score for the game and input for initials and button -->
+    <section id="userscore">
+        <p>All Done!</p>
+        <p>Your final score is: &nbsp;<span id="myscore"></span></p>
+        <div class="initialinteraction">
+            <input id="initials" type="text">&nbsp;&nbsp;<button id="addscore">Submit</button>
+        </div>
+    </section>
+
     <footer>
     </footer>
     <script src="./assets/game.js"></script>

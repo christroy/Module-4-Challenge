@@ -2,6 +2,13 @@ const timerEl = document.getElementById("timer");
 const startBtn = document.getElementById("start");
 const questionEl = document.getElementById("question-item");
 const answerHolderEl = document.getElementById("answer-choices-shown");
+const showscoresBtn = document.getElementById("showscores");
+const highscoresDiv = document.getElementById("highscores");
+const userscoreEl = document.getElementById("userscore");
+const gameDiv = document.getElementById("game");
+const gamescore = document.getElementById("myscore");
+const addscoreBtn = document.getElementById("addscore");
+const initialsInput = document.getElementById("initials");
 let questionCounter = 0;
 let playerScore = 0;
 
@@ -10,6 +17,7 @@ const questionObjectArray = [{
     name: "What makes the sky blue?",
     answers: ["A. sun reflecting off ocean", "B. pollution", "C. global warming", "D. birds"],
     key: 0
+    
 
 },
 {
@@ -49,6 +57,10 @@ var startQuiz = function () {
 }
 
 var countdown = function () {
+var timeInterval;
+    if (timeInterval) {
+        clearInterval(timeInterval);
+    }
     //amount of seconds given
     var timeRemaining = 75;
 
@@ -60,7 +72,7 @@ var countdown = function () {
 
 
     //actual timer 
-    var timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
 
         if (timeRemaining > 0) {
             timerEl.textContent = timeRemaining + " seconds remaining";
@@ -70,7 +82,7 @@ var countdown = function () {
         else {
             //stops timer
             clearInterval(timeInterval);
-            //endGame();
+            endGame();
         }
 
 
@@ -164,10 +176,29 @@ let nextQuestion = function (event) {
 //create function to end the game by blanking page content (main tag with page-content class in html)
 let endGame = function () {
     //clear screen
-    let theScreen = document.getElementsByClassName("page-content");
-    theScreen.innerHTML = '';
+    gameDiv.style.display="none";
+    gamescore.innerHTML=playerScore;
+    userscoreEl.style.display="block";
 }
-
+let addscoreFn= function () {
+    if (initialsInput.value === "") {
+        return;
+    }
+    let initials = initialsInput.value;
+    let thisScore = scoreData[initials]
+    if (thisScore) {
+        scoreData[initials] = (thisScore<playerScore) ? playerScore : thisScore;
+    }
+    else {
+        scoreData[initials] = playerScore;
+    }
+    localStorage.setItem ("QuizScores", JSON.stringify(scoreData))
+    highscoresDiv.style.display="none"
+    gameDiv.style.display="block";
+    userscoreEl.style.display="none";
+    countdown();
+    nextQuestion();
+}
 
 //make function to create elements for the player's score and other info.
 let finalScoreInfo = function () {
@@ -176,8 +207,32 @@ let finalScoreInfo = function () {
     finalScoreEl.textContent = playerScore;
 
 }
+let showScores = function () {
+    highscoresDiv.innerHTML = "";
+    let scoreReport = "&nbsp;&nbsp;";
+    highscoresDiv.style.display = "block";
+    for (let key in scoreData) {
+        scoreReport += key + ": " + scoreData[key] + "&nbsp;&nbsp;"
+    }
+    highscoresDiv.innerHTML = scoreReport
 
+}
+
+
+// create local storage to hold score values if it's not here already.
+let scoreData = localStorage.getItem("QuizScores")
+if (scoreData === null) {
+    localStorage.setItem("QuizScores", "{}") 
+    scoreData = "{}" 
+}
+
+scoreData = JSON.parse(scoreData)
+
+showscoresBtn.addEventListener("click", showScores);
 
 //event listener for clicking start button
 startBtn.addEventListener("click", startQuiz);
 
+//event listener for add score button
+
+addscoreBtn.addEventListener("click", addscoreFn)

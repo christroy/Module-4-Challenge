@@ -10,5 +10,19 @@ li {
     background: grey;
 }
 
-/* jfdlaj */
+#score-section {
+    display:flex;
+}
 
+#userscore {
+    display: none;
+}
+
+#userscore p {
+    font-size: 20px;
+    font-weight: bold;
+}
+.initialinteraction {
+    display: flex;
+    
+}
