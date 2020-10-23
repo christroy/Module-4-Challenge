@@ -9,6 +9,7 @@ const gameDiv = document.getElementById("game");
 const gamescore = document.getElementById("myscore");
 const addscoreBtn = document.getElementById("addscore");
 const initialsInput = document.getElementById("initials");
+let timeLeft = 60;
 let questionCounter = 0;
 let playerScore = 0;
 
@@ -17,7 +18,7 @@ const questionObjectArray = [{
     name: "What makes the sky blue?",
     answers: ["A. sun reflecting off ocean", "B. pollution", "C. global warming", "D. birds"],
     key: 0
-    
+
 
 },
 {
@@ -43,8 +44,7 @@ const questionObjectArray = [{
 
 
 //function to start quiz once the start button is clicked
-
-var startQuiz = function () {
+function startQuiz() {
 
     //hides start button 
     startBtn.style.visibility = "hidden";
@@ -56,45 +56,21 @@ var startQuiz = function () {
     runQuestions();
 }
 
-var countdown = function () {
-var timeInterval;
-    if (timeInterval) {
-        clearInterval(timeInterval);
-    }
-    //amount of seconds given
-    var timeRemaining = 75;
+function countdown() {
+    var timeInterval = setInterval(function () {
+        timeLeft--;
+        timerEl.innerHTML = timeLeft;
 
-    //reset player score every time game starts
-    playerScore = 0;
-
-    //variable to hold current question on screen
-    questionCounter = 0;
-
-
-    //actual timer 
-    timeInterval = setInterval(function () {
-
-        if (timeRemaining > 0) {
-            timerEl.textContent = timeRemaining + " seconds remaining";
-            timeRemaining--;
-
-        }
-        else {
-            //stops timer
+        if (timeLeft <= 0) {
             clearInterval(timeInterval);
             endGame();
         }
 
-
     }, 1000);
-
-
-
-
 }
 
 //function to put questions on screen
-let runQuestions = function () {
+function runQuestions() {
 
 
     //create element to hold question then create 
@@ -108,23 +84,22 @@ let runQuestions = function () {
 
     //Append holder for answers we create to the div element 'answer-choices-shown' that is by default in the html file
     answerHolderEl.appendChild(answersShown);
-    currentQuestion = questionObjectArray[questionCounter];
-
+    
+    let question = questionObjectArray[questionCounter]
 
     //grab question info and place object.name into div element
-    currentQName = currentQuestion.name;
-    questionShown.innerHTML = "<h3> " + currentQName + "</h3>";
+    questionShown.innerHTML = "<h3> " + question.name + "</h3>";
     questionEl.appendChild(questionShown);
 
 
     //add the answer choices from the array of objects
-    for (let a = 0; a < currentQuestion.answers.length; a++) {
+    for (let i = 0; i < question.answers.length; i++) {
         //create list-item (answer choice)
         let answerChoice = document.createElement("li");
-        answerChoice.textContent = currentQuestion.answers[a];
+        answerChoice.textContent = question.answers[i];
 
         //add property of being the correct answer
-        if (a === currentQuestion.key) {
+        if (i === question.key) {
             answerChoice.setAttribute("correct-answer", "true");
             //the above gives the li an attribute "correct-answer" and sets equal to "true"
             console.log(answerChoice);
@@ -141,9 +116,9 @@ let runQuestions = function () {
 }
 
 //function to move to next question when click event occurs on answer choice list element
-let nextQuestion = function (event) {
+function nextQuestion(event) {
     //if question counter has not reached the maximum number then move to next question
-    if (questionCounter < questionObjectArray.length -1) {
+    if (questionCounter < questionObjectArray.length - 1) {
 
         //element holding child elements involving all question info.
         // let questionDataEl = document.getElementById("question-item");
@@ -157,6 +132,10 @@ let nextQuestion = function (event) {
         //add to player score if correct answer is clicked
         if (event.target.getAttribute("correct-answer") === "true") {
             playerScore += 5;
+        }
+
+        else {
+            timeLeft -= 10;
         }
 
         //make the elements holding question/answer info. blank so that the runquestions function can add new elements with the new question's information
@@ -174,40 +153,50 @@ let nextQuestion = function (event) {
 
 
 //create function to end the game by blanking page content (main tag with page-content class in html)
-let endGame = function () {
+function endGame() {
     //clear screen
-    gameDiv.style.display="none";
-    gamescore.innerHTML=playerScore;
-    userscoreEl.style.display="block";
+    gameDiv.style.display = "none";
+    gamescore.innerHTML = playerScore;
+    userscoreEl.style.display = "block";
 }
-let addscoreFn= function () {
+function addscoreFn() {
     if (initialsInput.value === "") {
         return;
     }
     let initials = initialsInput.value;
-    let thisScore = scoreData[initials]
-    if (thisScore) {
-        scoreData[initials] = (thisScore<playerScore) ? playerScore : thisScore;
+    let oldScore = scoreData[initials]
+
+    if (oldScore) {
+        // scoreData[initials] = (oldScore < playerScore) ? playerScore : oldScore;
+        
+    // check if there is initials that are the same as what you just entered
+        
+       oldScore >= playerScore  //if old score is higher than player score do nothing. 
+    
+       else {
+           //if playerscore is higher than  oldscore, update oldscore in local storage//
+
+       }
     }
     else {
         scoreData[initials] = playerScore;
     }
-    localStorage.setItem ("QuizScores", JSON.stringify(scoreData))
-    highscoresDiv.style.display="none"
-    gameDiv.style.display="block";
-    userscoreEl.style.display="none";
+    localStorage.setItem("QuizScores", JSON.stringify(scoreData))
+    highscoresDiv.style.display = "none"
+    gameDiv.style.display = "block";
+    userscoreEl.style.display = "none";
     countdown();
     nextQuestion();
 }
 
 //make function to create elements for the player's score and other info.
-let finalScoreInfo = function () {
+function finalScoreInfo() {
     let finalScoreEl = document.createElement("li")
 
     finalScoreEl.textContent = playerScore;
 
 }
-let showScores = function () {
+function showScores() {
     highscoresDiv.innerHTML = "";
     let scoreReport = "&nbsp;&nbsp;";
     highscoresDiv.style.display = "block";
@@ -222,10 +211,10 @@ let showScores = function () {
 // create local storage to hold score values if it's not here already.
 let scoreData = localStorage.getItem("QuizScores")
 if (scoreData === null) {
-    localStorage.setItem("QuizScores", "{}") 
-    scoreData = "{}" 
+    localStorage.setItem("QuizScores", "{}")
+    scoreData = "{}"
 }
-
+console.log(scoreData)
 scoreData = JSON.parse(scoreData)
 
 showscoresBtn.addEventListener("click", showScores);
